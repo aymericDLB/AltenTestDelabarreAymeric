@@ -7,29 +7,32 @@ import { ProductDto } from './models/productDto';
 })
 export class GlobalService {
 
-  private fichierJson: string = '../../assets/products.json';
+  //V1 Sans Backend
+  //private fichierJson: string = '../../assets/products.json';
+
+  //V2 Avec Backend
+  private urlBackend: string = 'http://localhost:3000/api';
 
   constructor(private _http: HttpClient) { }
 
   getProducts() {
-    return this._http.get(this.fichierJson);
+    return this._http.get(this.urlBackend + '/products');
   }
 
   getProductbyId(idProduct: number) {
-    return this._http.get('URL API'+ idProduct);
+    return this._http.get(this.urlBackend + '/product/' + idProduct);
   }
 
   createProduct(product: ProductDto) {
-    return this._http.post<any>('URL API', product);
+    return this._http.post<any>(this.urlBackend + '/products', product);
   }
 
   updateProduct(newProduct: ProductDto) {
-    return this._http.put<any>('URL API' + newProduct.id, newProduct);
+    return this._http.put<any>(this.urlBackend + '/product/' + newProduct.id, newProduct);
   }
 
   deleteProduct(idProduct: number) {
-    return this._http.delete<any>('URL API' + idProduct);
+    return this._http.delete<any>(this.urlBackend + '/product/' + idProduct);
   }
-
 
 }

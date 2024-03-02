@@ -103,7 +103,7 @@ import { RippleModule } from 'primeng/ripple';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-
+// J'ai également rajouter le modules de PrimeNg ici car ceux présent dans SharedModule n'était pas reconnu
 
 @NgModule({
   declarations: [AppComponent, ProductsComponent, AdminComponent],

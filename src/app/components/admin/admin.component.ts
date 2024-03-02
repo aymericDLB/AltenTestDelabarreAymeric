@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.globalService.getProducts().subscribe(res => {
-      this.products = JSON.parse(JSON.stringify(res)).data;
+      this.products = JSON.parse(JSON.stringify(res));
       this.loading = false;
     });
   }
@@ -45,6 +45,9 @@ export class AdminComponent implements OnInit {
           header: 'Confirm',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+              this.selectedProducts.forEach(product => {
+                this.globalService.deleteProduct(product.id).subscribe();
+              });
               this.products = this.products.filter(val => !this.selectedProducts.includes(val));
               this.selectedProducts = null;
               this.messageService.add({severity:'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
@@ -53,6 +56,7 @@ export class AdminComponent implements OnInit {
   }
 
   editProduct(product: ProductDto) {
+    this.globalService.updateProduct(product).subscribe();
     this.product = {...product};
     this.productDialog = true;
   }
@@ -63,6 +67,7 @@ export class AdminComponent implements OnInit {
           header: 'Confirm',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+              this.globalService.deleteProduct(product.id).subscribe();
               this.products = this.products.filter(val => val.id !== product.id);
               this.product = {};
               this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
@@ -80,13 +85,14 @@ export class AdminComponent implements OnInit {
 
       if (this.product.name.trim()) {
           if (this.product.id) {
+              this.globalService.updateProduct(this.product).subscribe();
               this.products[this.findIndexById(this.product.id)] = this.product;
               this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
           }
           else {
-              this.product.id = this.createId();
               this.product.image = 'product-placeholder.svg';
               this.product.code = this.createCode();
+              this.globalService.createProduct(this.product).subscribe();
               this.products.push(this.product);
               this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
           }
@@ -107,11 +113,6 @@ export class AdminComponent implements OnInit {
       }
 
       return index;
-  }
-
-  createId(): number {
-    const randomFourDigitNumber = Math.floor(Math.random() * 9000) + 1000;
-    return Math.max(randomFourDigitNumber, 1030);
   }
 
   createCode(): string {

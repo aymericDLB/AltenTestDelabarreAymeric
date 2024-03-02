@@ -24,7 +24,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.globalService.getProducts().subscribe(res => {
-      this.products = JSON.parse(JSON.stringify(res)).data;
+      this.products = JSON.parse(JSON.stringify(res));
     });
 
     this.sortOptions = [

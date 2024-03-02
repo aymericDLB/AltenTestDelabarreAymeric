@@ -1,9 +1,5 @@
 <div *ngIf="products" class="container">
 
-
-
-
-
     <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" [rowsPerPageOptions]="[10,25,50]" filterBy="name"
         [sortField]="sortField" [sortOrder]="sortOrder" layout="grid" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="header">
@@ -54,6 +50,5 @@
             </div>
         </ng-template>
     </p-dataView>
-
 
 </div>
